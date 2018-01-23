@@ -27,7 +27,7 @@ class XueShu:
 
     def search(self,qs):
         url = 'http://xueshu.baidu.com/s'
-        p = {'wd':qs}
+        p = {'wd':qs,'sc_hit':'1'}
         r = self.sess.get(url=url,params = p).content
         soup = BeautifulSoup(r,'lxml')
         # c = soup.select('a.sc_q')
@@ -42,7 +42,7 @@ class XueShu:
         sc_list = cite.select('div.sc_allversion  a.v_source')
         source_url = sc_list[0].get('href').strip()
         
-        print(source_url)
+        # print(source_url)
         cite_btn = cite.select('a.sc_q')[0]
         # source_url = cite.get('data-link')
         p_sign = cite_btn.get('data-sign')
@@ -53,13 +53,18 @@ class XueShu:
         with open(BASE_PATH / filename,'wb') as f:
             f.write(r.content)
         return r.text
+
+    def fetch_all(self,pdf_path:Path = PDF_PATH):
+        for article in pdf_path.glob('*.pdf'):
+            self.search(article.name.split('.')[:-1])
     
+
     def update_pdf_path(self):
         self.pdf_path = filedialog.askdirectory()
 
 def main():
     bot = XueShu()
-    bot.search('一种生态型人工浮岛的设计_李敏达')
+    bot.fetch_all()
 
 if __name__ == '__main__':
     main()
