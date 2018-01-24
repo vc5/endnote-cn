@@ -7,9 +7,9 @@
 from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
-from tkinter import filedialog,Tk
+from tkinter import filedialog, Tk
 import re
-from urllib.parse import urlparse, urlunparse, unquote
+from urllib.parse import urlparse, unquote
 
 BASE_PATH = Path(__file__).parent
 PDF_PATH = BASE_PATH / 'pdf'
@@ -18,6 +18,7 @@ UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like 
 
 root = Tk()
 root.withdraw()
+
 
 class XueShu:
     index_url = 'https://xueshu.baidu.com/'
@@ -32,7 +33,7 @@ class XueShu:
         url = 'http://xueshu.baidu.com/s'
         p = {'wd': qs, 'sc_hit': '1'}
         r = self.sess.get(url=url, params=p)
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.content, 'html.parser')
         # c = soup.select('a.sc_q')
         c = soup.select('div.result')
         # self.fetch_enw(c[0])
@@ -83,7 +84,7 @@ class XueShu:
         pass
 
     def update_pdf_path(self):
-        dir_str =filedialog.askdirectory()
+        dir_str = filedialog.askdirectory()
         self.pdf_path = Path(dir_str)
 
     def save(self, filename):
