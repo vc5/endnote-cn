@@ -108,3 +108,6 @@ pdf/*.pdf
 
 # IDE Staff
 .vscode/
+.idea/
+bin/
+other/
