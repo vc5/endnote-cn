@@ -94,7 +94,7 @@ class XueShu:
     def add_article(self, cite: BeautifulSoup):
         url = 'http://a.xueshu.baidu.com/usercenter/data/retpagebatch'
         title = cite.find(attrs={'data-click': "{'button_tp':'title'}"}).text
-        print('正在查询文献【%s】的引文' % title)
+        print('为您匹配到【%s】' % title)
         reqdata = cite.select('i.reqdata')[0]
         param_url = reqdata.get('url')
         param_diversion = reqdata.get('diversion')
@@ -127,7 +127,7 @@ class XueShu:
         filename = re.findall(r'filename=(.*?enw)',
                               r.headers['Content-Disposition'])[0]
         buff = r.content
-        with open(BASE_PATH / filename, 'wb') as f:
+        with open(self.pdf_path / filename, 'wb') as f:
             f.write(buff)
         print('导出成功')
 
